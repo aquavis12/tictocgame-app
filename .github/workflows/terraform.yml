@@ -15,6 +15,9 @@ jobs:
   terraform:
     name: Terraform Validation & Security
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
       - name: Checkout repository
@@ -34,9 +37,8 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
-
       - name: tfsec - Terraform Security Scanner
         uses: aquasecurity/tfsec-action@v1.0.0
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -out=tfplan.txt
